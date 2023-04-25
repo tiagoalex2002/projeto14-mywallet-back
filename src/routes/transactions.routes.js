@@ -1,5 +1,5 @@
-import { getOperations } from "./Controllers/transactionControllers.js"
-import { addOperation } from "./Controllers/transactionControllers.js"
+import { getOperations } from "../Controllers/transactionController.js"
+import { addOperation } from "../Controllers/transactionController.js"
 import { Router } from "express"
 import validateSchema from "../Middleware/validateSchema.js"
 import transactionSchema from "../schemas/transactionSchema.js"

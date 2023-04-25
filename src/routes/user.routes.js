@@ -1,4 +1,4 @@
-import { register, login, logout } from "./Controllers/userControllers.js"
+import { register, login, logout } from "../Controllers/userController.js"
 import { Router } from "express"
 import validateSchema from "../Middleware/validateSchema.js"
 import loginSchema from "../schemas/loginSchema.js"

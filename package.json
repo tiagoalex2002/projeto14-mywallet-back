@@ -14,7 +14,7 @@
   "devDependencies": {
     "nodemon": "^2.0.22"
   },
-  "name": "projeto13-mywallet-back",
+  "name": "projeto14-mywallet-back",
   "version": "1.0.0",
   "type": "module",
   "main": "./src/app.js",
