@@ -3,7 +3,6 @@ import {db} from "../app.js"
 export async function authValidation(req, res, next) {
     const { authorization } = req.headers;
     const token = authorization?.replace('Bearer ', '');
-    console.log(token)
 
     if (!token) {
         return res.status(401).send("O erro é na autenticação com o token")

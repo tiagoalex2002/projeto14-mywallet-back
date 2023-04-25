@@ -6,7 +6,7 @@ export async function addOperation(req, res) {
     const { tipo } = req.params;
     let date = dayjs()
 
-    res.locals.session= session;
+    let session= res.locals.session;
     const user = await db.collection("users").findOne({
         password: session.userId
     })
@@ -27,6 +27,9 @@ export async function addOperation(req, res) {
             } catch (err) {
                 console.log(err.message)
             }
+        }
+        else{
+            return alert("Erro")
         }
     }
     else {
@@ -51,12 +54,16 @@ export async function getOperations(req, res) {
             const exes = await db.collection("exits").find().toArray()
             entrances.push(entries)
             exits.push(exes)
-            operations.push(entries)
-            operations.push(exes)
+            for(let i=0; i< entrances.length; i++){
+                operations.push(entrances[i])
+            }
+            for(let i=0; i< exits.length; i++){
+                operations.push(exits[i])
+            }
             for (let i = 0; i < operations.length; i++) {
                 let maior = i;
                 for (let j = i + 1; j < operations.length; j++) {
-                    if (operations[j].time > operations[menor].time) {
+                    if (operations[j].time > operations[maior].time) {
                         maior = j;
                     }
                 }
@@ -64,7 +71,7 @@ export async function getOperations(req, res) {
                 operations[i] = operations[maior];
                 operations[maior] = aux;
             }
-            return res.send(operations, entrances, exits, user)
+            return res.send([operations, entrances, exits, user])
         } catch (err) {
             console.log(err.message)
         }
