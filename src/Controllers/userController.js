@@ -9,10 +9,6 @@ import loginSchema from "../schemas/loginSchema.js";
 export async function register(req, res) {
     const { name, email, password } = req.body
 
-    const validation = signupSchema.validate(req.body);
-    if (validation.error) {
-        return res.status(422).send("Algum campo está inválido, por favor, insira novamente")
-    }
 
     const cryptpassword = bcrypt.hashSync(password, 10)
 
@@ -35,11 +31,6 @@ export async function register(req, res) {
 
 export async function login(req, res) {
     const { email, password } = req.body;
-
-    const validation = loginSchema.validate(req.body);
-    if (validation.error) {
-        return res.sendStatus(422)
-    }
 
     try {
         let user = await db.collection("users").findOne({ email: email })

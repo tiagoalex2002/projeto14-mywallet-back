@@ -10,17 +10,7 @@ export async function addOperation(req, res) {
     const { tipo } = req.params;
     let date = dayjs()
 
-    if (!token) {
-        return res.sendStatus(401)
-    }
-
-
-
-    const validation = transactionSchema.validate(req.body);
-    if (validation.error) {
-        return res.sendStatus(422)
-    }
-
+    const session = res.locals.session
     const user = await db.collection("users").findOne({
         _id: session.userId
     })
@@ -54,7 +44,7 @@ export async function getOperations(req, res) {
     let exits = []
     let operations = []
 
-
+    const session = res.locals.session
     const user = await db.collection("users").findOne({
         _id: session.userId
     })
