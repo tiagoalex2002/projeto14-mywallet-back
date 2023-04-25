@@ -24,4 +24,4 @@ try {
 
 export const db = mongoclient.db()
 
-app.listen(5000, () => console.log("Servidor rodando"))
+app.listen(process.env.PORT, () => console.log("Servidor rodando no port" + process.env.PORT))
