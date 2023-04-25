@@ -40,8 +40,7 @@ export async function addOperation(req, res) {
 export async function getOperations(req, res) {
 
     let entrances = []
-    let exits = []
-    let operations = []
+    let exits =[]
 
     const session = res.locals.session
     const user = await db.collection("users").findOne({
@@ -54,24 +53,7 @@ export async function getOperations(req, res) {
             const exes = await db.collection("exits").find().toArray()
             entrances.push(entries)
             exits.push(exes)
-            for(let i=0; i< entrances.length; i++){
-                operations.push(entrances[i])
-            }
-            for(let i=0; i< exits.length; i++){
-                operations.push(exits[i])
-            }
-            for (let i = 0; i < operations.length; i++) {
-                let maior = i;
-                for (let j = i + 1; j < operations.length; j++) {
-                    if (operations[j].time > operations[maior].time) {
-                        maior = j;
-                    }
-                }
-                let aux = operations[i];
-                operations[i] = operations[maior];
-                operations[maior] = aux;
-            }
-            return res.send([operations, entrances, exits, user])
+            return res.send([ entrances, exits,user])
         } catch (err) {
             console.log(err.message)
         }
