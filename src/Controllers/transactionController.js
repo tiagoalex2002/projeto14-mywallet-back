@@ -1,8 +1,4 @@
 import dayjs from "dayjs"
-import joi from "joi"
-import bcrypt from "bcrypt"
-import { v4 as uuid } from 'uuid';
-import transactionSchema from "../schemas/transactionSchema.js";
 import { db } from "../app.js";
 
 export async function addOperation(req, res) {
@@ -10,9 +6,9 @@ export async function addOperation(req, res) {
     const { tipo } = req.params;
     let date = dayjs()
 
-    const session = res.locals.session
+    res.locals.session= session;
     const user = await db.collection("users").findOne({
-        _id: session.userId
+        password: session.userId
     })
 
     if (user) {
@@ -46,27 +42,27 @@ export async function getOperations(req, res) {
 
     const session = res.locals.session
     const user = await db.collection("users").findOne({
-        _id: session.userId
+        password: session.userId
     })
 
     if (user) {
         try {
-            const entries = await db.collection("entrance").find()
-            const exes = await db.collection("exits").find()
+            let entries = await db.collection("entrance").find().toArray()
+            const exes = await db.collection("exits").find().toArray()
             entrances.push(entries)
             exits.push(exes)
             operations.push(entries)
             operations.push(exes)
             for (let i = 0; i < operations.length; i++) {
                 let maior = i;
-                for (let j = i + 1; j < numeros.length; j++) {
+                for (let j = i + 1; j < operations.length; j++) {
                     if (operations[j].time > operations[menor].time) {
                         maior = j;
                     }
                 }
                 let aux = operations[i];
                 operations[i] = operations[maior];
-                operations[menor] = aux;
+                operations[maior] = aux;
             }
             return res.send(operations, entrances, exits, user)
         } catch (err) {
