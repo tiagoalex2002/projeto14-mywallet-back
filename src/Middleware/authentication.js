@@ -1,6 +1,7 @@
 export async function authValidation(req, res, next) {
     const { authorization } = req.header;
     const token = authorization?.replace('Bearer ', '');
+    res.locals.token;
 
     if (!token) {
         return res.sendStatus(401)

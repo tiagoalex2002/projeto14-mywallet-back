@@ -49,3 +49,14 @@ export async function login(req, res) {
         console.log(err.message)
     }
 }
+
+export async function logout(req, res) {
+    const token = res.locals.token;
+    try {
+        let cad = await db.collection('sessions').findOne({ token: token })
+        await db.collection("sessions").deleteOne({ token: token })
+        return res.sendStatus(200)
+    } catch (err) {
+        console.log(err.message)
+    }
+}
