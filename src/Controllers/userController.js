@@ -3,15 +3,11 @@ import joi from "joi"
 import bcrypt from "bcrypt"
 import { v4 as uuid } from 'uuid';
 import { db } from "../app.js";
+import signupSchema from "../schemas/signupSchema.js";
+import loginSchema from "../schemas/loginSchema.js";
 
 export async function register(req, res) {
     const { name, email, password } = req.body
-
-    signupSchema = joi.object({
-        name: joi.string().required(),
-        email: joi.string().required(),
-        password: joi.number().min(3).required()
-    })
 
     const validation = signupSchema.validate(req.body);
     if (validation.error) {
@@ -39,10 +35,6 @@ export async function register(req, res) {
 
 export async function login(req, res) {
     const { email, password } = req.body;
-    const loginSchema = joi.object({
-        email: joi.string().required(),
-        password: joi.number().required()
-    })
 
     const validation = loginSchema.validate(req.body);
     if (validation.error) {

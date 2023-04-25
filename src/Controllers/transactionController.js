@@ -2,31 +2,24 @@ import dayjs from "dayjs"
 import joi from "joi"
 import bcrypt from "bcrypt"
 import { v4 as uuid } from 'uuid';
+import transactionSchema from "../schemas/transactionSchema.js";
 import { db } from "../app.js";
 
 export async function addOperation(req, res) {
     const { valor, description } = req.body;
     const { tipo } = req.params;
-    const { authorization } = req.header;
-    const token = authorization?.replace('Bearer ', '');
     let date = dayjs()
 
     if (!token) {
         return res.sendStatus(401)
     }
 
-    const transactionSchema = joi.object({
-        valor: joi.float().required(),
-        description: joi.string().required()
-    })
+
 
     const validation = transactionSchema.validate(req.body);
     if (validation.error) {
         return res.sendStatus(422)
     }
-
-    const session = await db.collection("sessions").findOne({ token });
-    if (!session) return res.sendStatus(401);
 
     const user = await db.collection("users").findOne({
         _id: session.userId
@@ -56,19 +49,11 @@ export async function addOperation(req, res) {
 }
 
 export async function getOperations(req, res) {
-    const { authorization } = req.headers;
-    const token = authorization?.replace('Bearer ', '');
+
     let entrances = []
     let exits = []
     let operations = []
 
-
-    if (!token) {
-        return res.sendStatus(401)
-    }
-
-    const session = await db.collection("sessions").findOne({ token });
-    if (!session) return res.sendStatus(401);
 
     const user = await db.collection("users").findOne({
         _id: session.userId
